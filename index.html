@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Influence by Robert Cialdini — Interactive Summary</title>
+<style>
+  :root{
+    --bg:#0f1115; --card:#181c24; --card2:#1f2530; --ink:#e8eaf0; --muted:#9aa3b2;
+    --gold:#f0b429; --teal:#2dd4bf; --red:#f87171; --green:#4ade80; --blue:#60a5fa;
+    --purple:#c084fc; --orange:#fb923c; --pink:#f472b6;
+    --radius:14px; --shadow:0 4px 24px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--ink); line-height:1.6;}
+  .wrap{max-width:1100px; margin:0 auto; padding:24px 18px 80px;}
+  header{text-align:center; padding:44px 16px 28px;}
+  header h1{font-size:clamp(1.8rem,4vw,3rem); background:linear-gradient(90deg,var(--gold),var(--orange),var(--pink)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  header .sub{color:var(--muted); margin-top:8px; font-size:1.05rem;}
+  .views{display:inline-flex; align-items:center; gap:8px; margin-top:14px; background:var(--card); border:1px solid #2a3140; border-radius:999px; padding:6px 16px; font-size:.9rem; color:var(--muted);}
+  .views b{color:var(--teal);}
+  nav{position:sticky; top:0; z-index:50; background:rgba(15,17,21,.92); backdrop-filter:blur(8px); border-bottom:1px solid #242b38; display:flex; flex-wrap:wrap; justify-content:center; gap:6px; padding:10px;}
+  nav button{background:transparent; border:1px solid transparent; color:var(--muted); padding:8px 14px; border-radius:999px; cursor:pointer; font-size:.92rem; transition:.2s;}
+  nav button:hover{color:var(--ink); border-color:#2a3140;}
+  nav button.active{background:var(--gold); color:#14120a; font-weight:600;}
+  section.view{display:none; animation:fade .35s ease;}
+  section.view.active{display:block;}
+  @keyframes fade{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;}}
+  h2{font-size:1.5rem; margin:30px 0 14px; display:flex; align-items:center; gap:10px;}
+  h3{margin:18px 0 8px;}
+  .card{background:var(--card); border:1px solid #242b38; border-radius:var(--radius); padding:20px; margin:14px 0; box-shadow:var(--shadow);}
+  table{width:100%; border-collapse:collapse; margin:12px 0; font-size:.93rem;}
+  th{background:var(--card2); text-align:left; padding:10px 12px; color:var(--gold); border-bottom:2px solid #2a3140; white-space:nowrap;}
+  td{padding:10px 12px; border-bottom:1px solid #242b38; vertical-align:top;}
+  tr:hover td{background:rgba(255,255,255,.025);}
+  .tag{display:inline-block; padding:2px 10px; border-radius:999px; font-size:.76rem; font-weight:600; margin:2px 2px 2px 0;}
+  .accordion .acc-head{width:100%; text-align:left; background:var(--card2); color:var(--ink); border:none; padding:16px 18px; border-radius:10px; cursor:pointer; font-size:1.05rem; font-weight:600; display:flex; justify-content:space-between; align-items:center; margin-top:10px; transition:.2s;}
+  .accordion .acc-head:hover{filter:brightness(1.15);}
+  .accordion .acc-body{display:none; padding:6px 6px 14px;}
+  .accordion .open + .acc-body{display:block;}
+  .chev{transition:.25s;}
+  .open .chev{transform:rotate(180deg);}
+  .pill-row{display:flex; flex-wrap:wrap; gap:8px; margin:10px 0;}
+  .takeaway{border-left:4px solid var(--teal); padding:10px 14px; background:var(--card2); border-radius:0 10px 10px 0; margin:10px 0;}
+  .warn{border-left-color:var(--red);}
+  .gold-b{border-left-color:var(--gold);}
+  ul.clean{list-style:none;} ul.clean li{padding:7px 0 7px 26px; position:relative;}
+  ul.clean li::before{content:"➤"; position:absolute; left:4px; color:var(--gold); font-size:.8rem; top:10px;}
+  ul.check li::before{content:"✅"; font-size:.85rem;}
+  ul.cross li::before{content:"🛡️";}
+  .grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px;}
+  .stat{background:var(--card2); border-radius:10px; padding:14px; text-align:center;}
+  .stat .big{font-size:1.6rem; font-weight:700; color:var(--gold);}
+  /* quiz */
+  .q-card{background:var(--card); border:1px solid #242b38; border-radius:var(--radius); padding:22px; margin:16px 0;}
+  .q-card .qnum{color:var(--muted); font-size:.85rem; letter-spacing:.06em; text-transform:uppercase;}
+  .q-card h3{margin:8px 0 14px; font-size:1.08rem;}
+  .opt{display:block; width:100%; text-align:left; background:var(--card2); color:var(--ink); border:1px solid #2a3140; border-radius:10px; padding:12px 14px; margin:8px 0; cursor:pointer; font-size:.95rem; transition:.15s;}
+  .opt:hover{border-color:var(--gold);}
+  .opt.correct{background:rgba(74,222,128,.15); border-color:var(--green);}
+  .opt.wrong{background:rgba(248,113,113,.15); border-color:var(--red);}
+  .opt:disabled{cursor:default; opacity:.85;}
+  .expl{display:none; margin-top:10px; padding:12px; border-radius:10px; background:rgba(96,165,250,.1); border:1px solid rgba(96,165,250,.3); font-size:.9rem;}
+  .expl.show{display:block;}
+  .score-bar{position:sticky; bottom:0; background:var(--card2); border:1px solid #2a3140; border-radius:12px; padding:12px 18px; display:flex; justify-content:space-between; align-items:center; margin-top:18px;}
+  .btn{background:var(--gold); color:#14120a; border:none; border-radius:999px; padding:10px 22px; font-weight:700; cursor:pointer; font-size:.95rem;}
+  .btn:hover{filter:brightness(1.1);}
+  .btn.ghost{background:transparent; color:var(--gold); border:1px solid var(--gold);}
+  .result-banner{text-align:center; padding:26px; border-radius:var(--radius); margin:16px 0; display:none;}
+  .flash-card{background:var(--card); border:1px solid #2a3140; border-radius:var(--radius); min-height:200px; display:flex; align-items:center; justify-content:center; text-align:center; padding:30px; cursor:pointer; font-size:1.15rem; position:relative; user-select:none;}
+  .flash-card .hint{position:absolute; bottom:10px; right:16px; font-size:.75rem; color:var(--muted);}
+  .fc-controls{display:flex; gap:10px; justify-content:center; margin:14px 0;}
+  footer{text-align:center; color:var(--muted); font-size:.85rem; margin-top:50px; border-top:1px solid #242b38; padding-top:20px;}
+  .emoji-big{font-size:1.4rem;}
+  @media(max-width:640px){ td,th{padding:8px;} .wrap{padding:14px 10px 60px;} }
+  .scroll-x{overflow-x:auto;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="emoji-big">🧠⚡</div>
+  <h1>INFLUENCE</h1>
+  <div class="sub">The Psychology of Persuasion — Robert B. Cialdini, PhD</div>
+  <div class="sub" style="font-size:.9rem;">Interactive summary · 7 Universal Principles · Investor Edition</div>
+  <div class="views">👀 Page views: <b id="viewCount">—</b></div>
+</header>
+
+<nav id="navbar">
+  <button data-view="overview" class="active">🗺️ Overview</button>
+  <button data-view="principles">📚 The 7 Principles</button>
+  <button data-view="investor">📈 Investor Lessons</button>
+  <button data-view="actions">✅ Action Steps</button>
+  <button data-view="flash">🃏 Flashcards</button>
+  <button data-view="quiz">🎯 Mastery Quiz</button>
+</nav>
+
+<div class="wrap">
+
+<!-- ================= OVERVIEW ================= -->
+<section class="view active" id="view-overview">
+  <h2>🗺️ The Big Idea</h2>
+  <div class="card">
+    <p>We live in an information-overloaded world, so our brains rely on <b>mental shortcuts (heuristics)</b> to make decisions. Cialdini calls these automatic responses <b>"click, run"</b> patterns — like a tape that plays automatically when a trigger is pressed. These shortcuts usually serve us well, but <b>"compliance professionals"</b> (salespeople, marketers, fundraisers, negotiators — and yes, market promoters) exploit them as <b>weapons of influence</b>.</p>
+    <div class="takeaway gold-b" style="margin-top:14px;"><b>Core thesis:</b> Persuasion is not an art of luck — it's a science built on seven universal principles. Knowing them lets you both persuade ethically and defend yourself against manipulation.</div>
+  </div>
+
+  <h2>⚙️ Foundational Concepts</h2>
+  <div class="card scroll-x">
+    <table>
+      <tr><th>Concept</th><th>What It Means</th><th>Classic Example</th></tr>
+      <tr><td><b>Click, Run (fixed-action patterns)</b></td><td>Automatic behavior triggered by a single cue, without conscious thought</td><td>Turkey mothers nurture anything that makes a "cheep-cheep" sound — even a stuffed polecat</td></tr>
+      <tr><td><b>Judgmental heuristics</b></td><td>Shortcuts like "expensive = good" that stand in for full analysis</td><td>Turquoise jewelry that wouldn't sell suddenly sold out when the price was accidentally <i>doubled</i></td></tr>
+      <tr><td><b>The Contrast Principle</b></td><td>Perception is relative: what comes second looks very different depending on what came first</td><td>Realtors show overpriced "setup" houses first; suit sellers sell the suit <i>before</i> the sweater</td></tr>
+      <tr><td><b>"Because" power</b></td><td>Giving any reason — even an empty one — dramatically raises compliance</td><td>Langer's copy-machine study: "May I use the Xerox because I have to make copies?" → 93% said yes</td></tr>
+      <tr><td><b>Exploiters vs. Smugglers</b></td><td>Profiteers fabricate trigger cues that aren't naturally present</td><td>Canned laughter, fake "regular price" tags, planted testimonials, bots inflating likes</td></tr>
+    </table>
+  </div>
+
+  <h2>🧭 The 7 Principles at a Glance</h2>
+  <div class="card scroll-x">
+    <table>
+      <tr><th>#</th><th>Principle</th><th>The Rule</th><th>Trigger Phrase</th><th>Defense in One Line</th></tr>
+      <tr><td>1</td><td>🎁 <b>Reciprocation</b></td><td>We feel obligated to repay what we receive</td><td>"Here's a free gift…"</td><td>Accept favors, but redefine tricks as tricks — then feel free to decline</td></tr>
+      <tr><td>2</td><td>❤️ <b>Liking</b></td><td>We say yes to people we like</td><td>"You and I are so alike!"</td><td>Separate the <i>person</i> from the <i>proposal</i></td></tr>
+      <tr><td>3</td><td>👥 <b>Social Proof</b></td><td>We copy what similar others are doing</td><td>"Everyone's buying it"</td><td>Check whether the evidence is real — and whether the crowd actually knows more than you</td></tr>
+      <tr><td>4</td><td>🎓 <b>Authority</b></td><td>We defer to experts and symbols of expertise</td><td>"Doctors recommend…"</td><td>Ask: is this a <i>real</i> expert? Is the expert <i>truthful</i> here?</td></tr>
+      <tr><td>5</td><td>⏳ <b>Scarcity</b></td><td>We want more of what we can have less of</td><td>"Only 2 left — today only!"</td><td>Notice the arousal rush; scarce ≠ better, it only feels that way</td></tr>
+      <tr><td>6</td><td>🔗 <b>Commitment & Consistency</b></td><td>Once committed, we act to stay consistent with it</td><td>"You said you'd…"</td><td>Ask your gut: "Knowing what I now know, would I commit again?"</td></tr>
+      <tr><td>7</td><td>🤝 <b>Unity</b> <span class="tag" style="background:var(--purple); color:#fff;">New Edition</span></td><td>We say yes to those we consider "one of us" — shared identity</td><td>"We're family / fellow alumni"</td><td>Ask whether the "we" framing is relevant to the merits of the request</td></tr>
+    </table>
+  </div>
+
+  <h2>📌 Points to Remember</h2>
+  <div class="card">
+    <div class="takeaway">Each principle works because it's usually <b>right</b> — the shortcuts exist because they serve us 95% of the time. The danger is <b>counterfeit triggers</b>.</div>
+    <div class="takeaway">Influence attempts are most powerful under <b>uncertainty, time pressure, fatigue, and information overload</b> — exactly the conditions of modern life (and modern markets).</div>
+    <div class="takeaway warn">The most effective manipulations don't feel like manipulation. If you feel a sudden <b>emotional surge to act now</b>, that surge is the signal to pause.</div>
+    <div class="takeaway gold-b">Ethical persuasion = <b>detecting</b> principles that naturally exist in a situation and pointing to them honestly. Manipulation = <b>manufacturing</b> them.</div>
+  </div>
+</section>
+
+<!-- ================= PRINCIPLES ================= -->
+<section class="view" id="view-principles">
+  <h2>📚 Deep Dive: The 7 Principles</h2>
+  <p style="color:var(--muted); margin-bottom:6px;">Click each principle to expand. Every section covers: how it works, famous evidence, the compliance tactics built on it, and how to defend yourself.</p>
+
+  <div class="accordion" id="principlesAcc">
+
+    <!-- 1 RECIPROCATION -->
+    <button class="acc-head" style="border-left:5px solid var(--teal);">🎁 1. Reciprocation — The Old Give and Take <span class="chev">▼</span></button>
+    <div class="acc-body"><div class="card">
+      <p><b>The rule:</b> We are trained from childhood to repay favors, gifts, and concessions. The obligation is so strong it works even with <i>unwanted</i> gifts and <i>disliked</i> givers.</p>
+      <h3>🔬 Key Evidence</h3>
+      <table>
+        <tr><th>Study / Story</th><th>Finding</th></tr>
+        <tr><td>Regan's Coke experiment</td><td>Subjects given an unrequested soda bought 2× more raffle tickets from the giver — regardless of whether they liked him</td></tr>
+        <tr><td>Hare Krishna flowers</td><td>Forcing a "gift" (a flower) on travelers massively increased donations, even from annoyed recipients</td></tr>
+        <tr><td>Ethiopia → Mexico aid (1985)</td><td>Famine-struck Ethiopia sent aid to Mexico after an earthquake — repaying help Mexico gave in <b>1935</b>. The obligation lasted 50 years</td></tr>
+        <tr><td>Free samples / Amway's "BUG"</td><td>Leaving free product with customers converts obligation into purchases</td></tr>
+      </table>
+      <h3>🛠️ Tactics Built on It</h3>
+      <ul class="clean">
+        <li><b>Rejection-then-retreat (door-in-the-face):</b> Make a large request, get refused, then "concede" to the smaller one you really wanted. The target feels obligated to concede back — and feels <i>more responsible and satisfied</i> with the outcome.</li>
+        <li><b>Free gifts, samples, "favors first":</b> small unsolicited gifts create outsized obligations.</li>
+        <li><b>"That's-not-all":</b> sweeteners added before you answer feel like concessions to repay.</li>
+      </ul>
+      <h3>🛡️ Defense</h3>
+      <ul class="clean cross">
+        <li>Accept initial offers, but mentally <b>redefine</b> them: if it turns out to be a sales device, not a gift, you owe nothing. Tricks don't deserve reciprocation.</li>
+        <li>Beware the <i>uninvited</i> debt and the <i>unequal</i> exchange (small favor → large return request).</li>
+      </ul>
+    </div></div>
+
+    <!-- 2 LIKING -->
+    <button class="acc-head" style="border-left:5px solid var(--pink);">❤️ 2. Liking — The Friendly Thief <span class="chev">▼</span></button>
+    <div class="acc-body"><div class="card">
+      <p><b>The rule:</b> We prefer to say yes to people we know and like — and skilled persuaders manufacture liking fast.</p>
+      <h3>🔑 The 5 Levers of Liking</h3>
+      <table>
+        <tr><th>Lever</th><th>How It Works</th><th>Example</th></tr>
+        <tr><td>Physical attractiveness</td><td>Halo effect: attractive = talented, kind, honest</td><td>Attractive candidates got 2.5× the votes; attractive defendants got lighter sentences</td></tr>
+        <tr><td>Similarity</td><td>We like people like us (dress, background, interests, even names)</td><td>Salespeople "mirror" posture and claim shared hobbies ("You're from Ohio? Me too!")</td></tr>
+        <tr><td>Compliments</td><td>Praise creates liking even when we know it's flattery</td><td>Joe Girard (world's "greatest car salesman") sent 13,000 monthly cards saying only "I like you"</td></tr>
+        <tr><td>Contact & cooperation</td><td>Familiarity + working toward joint goals builds bonds</td><td>"Good cop/bad cop"; the salesperson who "fights your corner with the manager"</td></tr>
+        <tr><td>Conditioning & association</td><td>Link yourself/product to positive things</td><td>Celebrity endorsements; weathermen blamed for the weather; "luncheon technique"</td></tr>
+      </table>
+      <div class="takeaway">⚽ <b>Basking in reflected glory:</b> fans say "<b>WE</b> won" after victories but "<b>THEY</b> lost" after defeats — we manage identity through associations.</div>
+      <div class="takeaway">🚗 The <b>Tupperware party</b> is the liking principle weaponized: the real seller is your friend, the hostess.</div>
+      <h3>🛡️ Defense</h3>
+      <ul class="clean cross">
+        <li>Don't fight the liking — <b>detect</b> it: "Have I come to like this person unusually fast?" If yes, separate the seller from the deal and evaluate the deal alone.</li>
+      </ul>
+    </div></div>
+
+    <!-- 3 SOCIAL PROOF -->
+    <button class="acc-head" style="border-left:5px solid var(--blue);">👥 3. Social Proof — Truths Are Us <span class="chev">▼</span></button>
+    <div class="acc-body"><div class="card">
+      <p><b>The rule:</b> We decide what's correct by watching what others do — especially when we're <b>uncertain</b> and the others are <b>similar to us</b>.</p>
+      <h3>🔬 Key Evidence</h3>
+      <table>
+        <tr><th>Study / Story</th><th>Finding</th></tr>
+        <tr><td>Canned laughter</td><td>Audiences laugh longer and rate shows funnier with fake laugh tracks — even though everyone hates them</td></tr>
+        <tr><td>Kitty Genovese / bystander effect</td><td><b>Pluralistic ignorance:</b> in groups, everyone looks calm while checking others — so nobody helps. A victim is more likely to be helped when only ONE bystander is present</td></tr>
+        <tr><td>Werther effect</td><td>After publicized suicides, suicides (and disguised ones as crashes) spike among <i>similar</i> people</td></tr>
+        <tr><td>Jonestown (1978)</td><td>910 people followed others into mass suicide — uncertainty + similarity in an isolated setting made social proof lethally powerful</td></tr>
+        <tr><td>Hotel towel reuse studies</td><td>"Most guests <i>in this room</i> reuse towels" beat environmental appeals — similarity supercharges proof</td></tr>
+      </table>
+      <div class="takeaway"><b>Two amplifiers:</b> ① <b>Uncertainty</b> — ambiguous situations make us watch the crowd; ② <b>Similarity</b> — we follow people like ourselves (the "many" and the "comparable").</div>
+      <div class="takeaway warn"><b>If you need help in a crowd:</b> single out ONE person — "You, sir, in the blue jacket, call an ambulance." Remove the ambiguity and the diffusion of responsibility.</div>
+      <h3>🛡️ Defense</h3>
+      <ul class="clean cross">
+        <li>Detect <b>counterfeit</b> proof (staged testimonials, bought reviews, bots) and discount it completely.</li>
+        <li>Never let the <b>pilot's autopilot</b> fly alone: the crowd can be wrong — periodically check the data yourself.</li>
+      </ul>
+    </div></div>
+
+    <!-- 4 AUTHORITY -->
+    <button class="acc-head" style="border-left:5px solid var(--gold);">🎓 4. Authority — Directed Deference <span class="chev">▼</span></button>
+    <div class="acc-body"><div class="card">
+      <p><b>The rule:</b> We obey legitimate authority reflexively — and we also obey the mere <b>symbols</b> of authority.</p>
+      <h3>🔬 Key Evidence</h3>
+      <table>
+        <tr><th>Study / Story</th><th>Finding</th></tr>
+        <tr><td>Milgram's obedience experiments</td><td>~65% of ordinary people delivered (what they believed were) dangerous 450-volt shocks because a lab-coated researcher said "the experiment requires that you continue"</td></tr>
+        <tr><td>"Rectal earache" case</td><td>Nurses administered ear drops rectally because a doctor's order said "place in R ear" — no one questioned it</td></tr>
+        <tr><td>Titles, clothes, trappings</td><td>A man in a suit jaywalking pulls 3.5× more followers; "Professor" makes him seem 2.5 inches taller; con men dress the part</td></tr>
+      </table>
+      <div class="takeaway"><b>Credibility hack used ethically:</b> arguing <i>against</i> your own interest first ("this model is slightly weaker on X…") massively boosts perceived trustworthiness — like the waiter Vincent who warned diners off expensive dishes, then upsold wine and dessert.</div>
+      <h3>🛡️ Defense — ask two questions</h3>
+      <ul class="clean cross">
+        <li>① "Is this authority truly an <b>expert</b> on <i>this</i> topic?" (symbols ≠ substance)</li>
+        <li>② "How <b>truthful</b> can I expect this expert to be <i>here</i>?" (what do they gain from my compliance?)</li>
+      </ul>
+    </div></div>
+
+    <!-- 5 SCARCITY -->
+    <button class="acc-head" style="border-left:5px solid var(--red);">⏳ 5. Scarcity — The Rule of the Few <span class="chev">▼</span></button>
+    <div class="acc-body"><div class="card">
+      <p><b>The rule:</b> Opportunities seem more valuable when their availability is limited. Rooted in ① heuristic "rare = good" and ② <b>psychological reactance</b> — losing freedoms makes us want them more.</p>
+      <h3>🔬 Key Evidence</h3>
+      <table>
+        <tr><th>Study / Story</th><th>Finding</th></tr>
+        <tr><td>Cookie jar study (Worchel)</td><td>Cookies from a jar of 2 rated tastier than identical ones from a jar of 10 — and tastiest when they <i>became</i> scarce due to <b>demand</b></td></tr>
+        <tr><td>Loss framing</td><td>Homeowners insulated more when told what they'd <b>lose</b> by not insulating than what they'd save — <b>loss aversion</b> beats gain framing</td></tr>
+        <tr><td>Romeo & Juliet effect</td><td>Parental interference intensifies romantic commitment — reactance in action</td></tr>
+        <tr><td>Censorship effect</td><td>Banned information is believed more and desired more — before it's even heard</td></tr>
+        <tr><td>Revolutions</td><td>Davies' J-curve: revolt comes when improving conditions are suddenly <b>taken away</b> — freedoms given then removed are the most dangerous</td></tr>
+      </table>
+      <h3>🛠️ Tactics Built on It</h3>
+      <ul class="clean">
+        <li><b>Limited numbers:</b> "only 2 left in stock" · <b>Deadlines:</b> "offer ends tonight"</li>
+        <li><b>Competition-for-scarce-resources:</b> other buyers in the showroom; auction fever; "another couple is also interested in this car"</li>
+        <li><b>Exclusive information:</b> "this news isn't public yet" doubled beef orders when framed as scarce information about scarce supply</li>
+      </ul>
+      <div class="takeaway warn"><b>Crucial insight:</b> scarce things don't <i>work</i> better, taste better, or perform better — joy comes not from <i>experiencing</i> a scarce item but merely from <i>possessing</i> it. Scarcity changes desire, not value.</div>
+      <h3>🛡️ Defense</h3>
+      <ul class="clean cross">
+        <li>The physical <b>rush of arousal</b> is your alarm. Pause and ask: "Do I want this for its <i>function</i>, or just because I can't have it?"</li>
+      </ul>
+    </div></div>
+
+    <!-- 6 COMMITMENT -->
+    <button class="acc-head" style="border-left:5px solid var(--green);">🔗 6. Commitment & Consistency — Hobgoblins of the Mind <span class="chev">▼</span></button>
+    <div class="acc-body"><div class="card">
+      <p><b>The rule:</b> Once we make a choice or take a stand, we face personal and social pressure to behave consistently with it — the drive is often stronger than self-interest.</p>
+      <h3>🔬 Key Evidence</h3>
+      <table>
+        <tr><th>Study / Story</th><th>Finding</th></tr>
+        <tr><td>Racetrack bettors</td><td>People are far more confident in their horse <b>right after</b> placing the bet — commitment creates its own justification</td></tr>
+        <tr><td>Foot-in-the-door (Freedman & Fraser)</td><td>Agreeing to a tiny sign ("Be a safe driver") made 76% later accept a huge ugly billboard — small commitments change <b>self-image</b></td></tr>
+        <tr><td>Chinese POW camps (Korean War)</td><td>Tiny written pro-communist statements ("the US is not perfect"), essay contests, and public readings gradually converted prisoners — <b>written, public, effortful, uncoerced</b> commitments are the strongest</td></tr>
+        <tr><td>Hazing rituals</td><td>Severe initiations make members value the group <i>more</i> (effort justification)</td></tr>
+        <tr><td>Lowballing (car dealers)</td><td>Offer a great price → let the customer commit & build new reasons → remove the original advantage. The decision "grows its own legs" and survives</td></tr>
+        <tr><td>Toy companies at Christmas</td><td>Advertise a toy → undersupply it → parents buy substitutes → restock in January and the promise to the child forces a second purchase</td></tr>
+      </table>
+      <h3>⚡ What Makes a Commitment Powerful</h3>
+      <div class="pill-row">
+        <span class="tag" style="background:var(--green);color:#06250f;">Active (written &gt; spoken)</span>
+        <span class="tag" style="background:var(--blue);color:#081c33;">Public</span>
+        <span class="tag" style="background:var(--orange);color:#2b1403;">Effortful</span>
+        <span class="tag" style="background:var(--purple);color:#1d0a2e;">Freely chosen (inner responsibility)</span>
+      </div>
+      <h3>🛡️ Defense — two signals</h3>
+      <ul class="clean cross">
+        <li>① <b>Stomach signs:</b> that tightening when you realize you're being pushed to comply against your interest — say: "Knowing what I know now, if I could go back, would I make the same commitment?"</li>
+        <li>② <b>Heart-of-hearts check:</b> catch the rationalizations before they pile up. The <i>first</i> feeling, before justification, is the honest one.</li>
+      </ul>
+    </div></div>
+
+    <!-- 7 UNITY -->
+    <button class="acc-head" style="border-left:5px solid var(--purple);">🤝 7. Unity — The "We" Is the Shared Me <span class="chev">▼</span></button>
+    <div class="acc-body"><div class="card">
+      <p><b>The rule (new in the expanded edition):</b> Beyond liking someone, we say yes to people we consider <b>one of us</b> — shared identity. The categories: family, place, locality, tribe, nation; and the experiences that create them.</p>
+      <h3>🧬 Two Sources of "We"</h3>
+      <table>
+        <tr><th>Source</th><th>Mechanism</th><th>Example</th></tr>
+        <tr><td><b>Being together</b> (kinship & place)</td><td>Genetic common ground and shared home/region trigger automatic favoritism</td><td>Cialdini got students' questionnaires returned by asking their <i>parents</i> (family unity); Holocaust rescuers often acted because <i>someone in their circle</i> asked</td></tr>
+        <tr><td><b>Acting together</b> (synchrony & co-creation)</td><td>Moving, singing, suffering, creating together fuses identities</td><td>Military drills, chanting, team rituals; co-creation ("IKEA effect") makes customers value products they helped build</td></tr>
+      </table>
+      <div class="takeaway">Asking for <b>advice</b> (not "opinion" or "expectations") puts someone in a <i>merged, collaborative</i> state — "advice makes an accomplice."</div>
+      <h3>🛡️ Defense</h3>
+      <ul class="clean cross">
+        <li>When someone stresses shared identity before an ask, check: is the "we" <b>relevant to the merits</b> of the request, or just a lever?</li>
+      </ul>
+    </div></div>
+  </div>
+</section>
+
+<!-- ================= INVESTOR ================= -->
+<section class="view" id="view-investor">
+  <h2>📈 Lessons for the Investor</h2>
+  <p style="color:var(--muted);">Markets are influence machines. Every principle in the book has a direct market analog — usually working against you.</p>
+
+  <div class="card scroll-x">
+    <table>
+      <tr><th>Principle</th><th>How It Shows Up in Investing</th><th>The Trap</th><th>Investor Countermove</th></tr>
+      <tr><td>🎁 Reciprocation</td><td>Free research reports, free dinners/seminars, broker "favors," airdropped tokens, free trials of paid signal services</td><td>You feel obligated to invest with / buy from the giver</td><td>Treat all freebies as marketing cost, not gifts. You owe nothing.</td></tr>
+      <tr><td>❤️ Liking</td><td>Charismatic CEOs and fund managers; advisors who mirror you; finfluencers who feel like friends</td><td>You buy the person, not the asset (Theranos, FTX charisma)</td><td>Evaluate the deal as if pitched by someone you dislike</td></tr>
+      <tr><td>👥 Social Proof</td><td>Bubbles, meme stocks, "everyone's in crypto," fund inflows chasing performance, FOMO threads</td><td>Pluralistic ignorance: everyone assumes everyone else did the homework. Nobody did.</td><td>The crowd is most confident at the top. Demand independent evidence; be wary when uncertainty is high — that's when herding peaks</td></tr>
+      <tr><td>🎓 Authority</td><td>Gurus, star managers, pundits in suits, "as seen on CNBC," credentialed newsletters</td><td>Symbols of expertise ≠ expertise; experts with conflicts aren't truthful experts</td><td>Ask Cialdini's two questions: real expert <i>on this</i>? What do they gain if I comply?</td></tr>
+      <tr><td>⏳ Scarcity</td><td>"Limited allocation," IPO/pre-sale exclusivity, closing windows, "last chance before the halving," auction-style bidding wars</td><td>Loss aversion + reactance → buying for possession, not value. Urgency kills due diligence</td><td>A genuine opportunity survives a 48-hour wait. If it can't, it was the trap</td></tr>
+      <tr><td>🔗 Commitment</td><td>Averaging down to stay "right," public stock picks you now defend, sunk-cost holding, doubling down after a thesis breaks</td><td>Like the racetrack bettors — confidence rises <i>after</i> the bet, evidence be damned</td><td>Ask: "Knowing what I know now, would I buy this today at this price?" If no — sell. Keep a decision journal to catch thesis drift</td></tr>
+      <tr><td>🤝 Unity</td><td>Investment "communities" and tribes (diamond hands, HODL gang), affinity fraud inside churches/ethnic groups (Madoff), national-champion stocks</td><td>"One of us" replaces analysis; dissent feels like betrayal</td><td>If belonging is part of the pitch, underwrite the asset as an outsider would</td></tr>
+    </table>
+  </div>
+
+  <h2>💡 Points to Remember (Investor Edition)</h2>
+  <div class="card">
+    <div class="takeaway gold-b"><b>Uncertainty is the amplifier.</b> Social proof and authority hit hardest exactly when markets are most uncertain — tops and bottoms. That's when your shortcuts are least trustworthy.</div>
+    <div class="takeaway"><b>Loss framing moves you more than gain framing.</b> "Don't miss out" is engineered around loss aversion. Reframe every FOMO pitch as: "What is the expected value, ignoring the deadline?"</div>
+    <div class="takeaway"><b>Commitment compounds silently.</b> Each public post, each averaging-down buy, adds "legs" under a decision that may no longer stand on its original reason. Audit your positions for reasons that grew <i>after</i> purchase.</div>
+    <div class="takeaway"><b>Manufactured scarcity is the oldest trick in finance.</b> Allocations, whitelists, and countdown timers are the cookie-jar experiment with your capital.</div>
+    <div class="takeaway warn"><b>Affinity fraud is Unity weaponized.</b> Madoff's victims trusted him as "one of us." The warmer the "we," the colder your diligence should be.</div>
+    <div class="takeaway"><b>Arguing against self-interest builds trust — watch for it both ways.</b> An honest advisor mentions drawbacks. A clever manipulator mentions <i>small</i> drawbacks to sell you the big lie.</div>
+  </div>
+</section>
+
+<!-- ================= ACTIONS ================= -->
+<section class="view" id="view-actions">
+  <h2>✅ Recommendations & Action Steps</h2>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>🛡️ Defend Yourself (Daily Life)</h3>
+      <ul class="clean check">
+        <li><b>Install a "pause trigger":</b> any sudden urgency, flattery, or emotional rush = automatic 24-hour delay before deciding.</li>
+        <li><b>Redefine fake gifts:</b> if a "favor" was a sales device, relabel it mentally — the obligation dissolves.</li>
+        <li><b>Separate person from proposal:</b> "Would I take this deal from someone I disliked?"</li>
+        <li><b>Run the two authority questions</b> before deferring: real expert? truthful here?</li>
+        <li><b>Use the time-machine test</b> on commitments: "Knowing what I know now, would I choose this again?"</li>
+        <li><b>Name the principle out loud.</b> Saying "that's a scarcity play" breaks the spell — labeling disarms automaticity.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🚀 Persuade Ethically (Work & Leadership)</h3>
+      <ul class="clean check">
+        <li><b>Give first, genuinely:</b> meaningful, unexpected, customized favors create real goodwill (reciprocity).</li>
+        <li><b>Always give a reason</b> — "because" nearly doubles compliance even for small asks.</li>
+        <li><b>Get commitments in writing, publicly, voluntarily:</b> goals written down and shared get achieved.</li>
+        <li><b>Start small:</b> foot-in-the-door beats one giant ask — small yeses change identities.</li>
+        <li><b>Show honest social proof from similar people:</b> "teams like yours did X" beats generic claims.</li>
+        <li><b>Admit a weakness before your strength</b> — it buys credibility for everything after.</li>
+        <li><b>Highlight genuine scarcity and unique information</b> — never fabricate it.</li>
+        <li><b>Build unity:</b> co-create, ask for advice, find true common identities.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>📈 Investor Checklist (Before Any Buy)</h3>
+      <ul class="clean check">
+        <li>Am I buying the <b>asset</b> or the <b>story/person/tribe</b>?</li>
+        <li>Is there a <b>deadline or limited allocation</b>? → extend my timeline by 48h minimum.</li>
+        <li>Would I buy this if <b>nobody else</b> owned it or talked about it?</li>
+        <li>Who benefits if I comply, and what did they <b>give me "free"</b> on the way here?</li>
+        <li>Write the thesis down <b>before</b> buying — with an exit condition. Review quarterly: has the reason changed since purchase?</li>
+        <li>If I'm defending a position publicly, flag it: my consistency bias is now active.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🧠 Habits to Build</h3>
+      <ul class="clean check">
+        <li>Keep a <b>decision journal</b> (date, thesis, emotion level 1–10, influence pressures noticed).</li>
+        <li>Do a monthly <b>influence audit</b>: which principle moved me this month, and was it legitimate?</li>
+        <li>Teach the 7 principles to someone else — teaching is the strongest retention commitment (yes, that's the principle working <i>for</i> you).</li>
+        <li>Re-take the quiz on this page until you score 90%+ twice. 🎯</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FLASHCARDS ================= -->
+<section class="view" id="view-flash">
+  <h2>🃏 Flashcards — Rapid Recall</h2>
+  <p style="color:var(--muted);">Tap the card to flip. Space it out over days for best retention.</p>
+  <div class="flash-card" id="flashCard" onclick="flipCard()">
+    <div id="fcText">Loading…</div>
+    <div class="hint">tap to flip</div>
+  </div>
+  <div class="fc-controls">
+    <button class="btn ghost" onclick="prevCard()">← Prev</button>
+    <span id="fcCount" style="align-self:center; color:var(--muted);"></span>
+    <button class="btn" onclick="nextCard()">Next →</button>
+  </div>
+</section>
+
+<!-- ================= QUIZ ================= -->
+<section class="view" id="view-quiz">
+  <h2>🎯 Mastery Quiz</h2>
+  <p style="color:var(--muted);">15 questions. Instant feedback with explanations. Score 90%+ and the concepts have stuck.</p>
+  <div id="quizArea"></div>
+  <div class="result-banner" id="resultBanner"></div>
+  <div class="score-bar">
+    <span>Score: <b id="scoreText">0 / 0</b></span>
+    <button class="btn" onclick="resetQuiz()">🔄 Restart Quiz</button>
+  </div>
+</section>
+
+<footer>
+  Interactive summary of <i>Influence: The Psychology of Persuasion</i> (New & Expanded) by Robert B. Cialdini.<br>
+  Built for learning & personal study. Best score saved in your browser. 🧠
+</footer>
+</div>
+
+<script>
+/* ---------- NAVIGATION ---------- */
+document.querySelectorAll('#navbar button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('#navbar button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('section.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('view-'+btn.dataset.view).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+/* ---------- ACCORDION ---------- */
+document.querySelectorAll('.acc-head').forEach(h=>{
+  h.addEventListener('click',()=>h.classList.toggle('open'));
+});
+
+/* ---------- VIEWS COUNTER (free Abacus API, graceful fallback) ---------- */
+(function(){
+  var el=document.getElementById('viewCount');
+  fetch('https://abacus.jasoncameron.dev/hit/influence-cialdini-summary/pageviews')
+    .then(function(r){return r.json();})
+    .then(function(d){var n=d.value!=null?d.value:d.count; el.textContent=(typeof n==='number')?n.toLocaleString():'—';})
+    .catch(function(){
+      try{
+        var k='influence_local_views';
+        var n=(parseInt(localStorage.getItem(k)||'0',10)+1);
+        localStorage.setItem(k,n);
+        el.textContent=n+' (local)';
+      }catch(e){ el.textContent='—'; }
+    });
+})();
+
+/* ---------- FLASHCARDS ---------- */
+var cards=[
+ {q:"🎁 Principle #1?", a:"Reciprocation — we repay what we receive, even unwanted gifts from people we dislike."},
+ {q:"What is 'rejection-then-retreat'?", a:"Ask big, get refused, retreat to the smaller real target. The concession demands a concession back — and the target feels MORE responsible & satisfied."},
+ {q:"The Contrast Principle?", a:"Perception is relative. Sell the suit before the sweater; show the bad house before the real one."},
+ {q:"The magic word that nearly doubled copy-machine compliance?", a:"'Because' — any reason, even an empty one ('because I have to make copies'), triggers automatic yes."},
+ {q:"👥 When is social proof most powerful?", a:"Under UNCERTAINTY, and when the others are SIMILAR to us."},
+ {q:"What is pluralistic ignorance?", a:"In a group emergency everyone looks calm while checking others — so nobody acts. Fix: single out one person with a direct command."},
+ {q:"🎓 Milgram's finding?", a:"~65% of ordinary people delivered maximum 'shocks' on an authority's instruction. We obey symbols: titles, clothes, trappings."},
+ {q:"Two defense questions against authority?", a:"① Is this person truly an expert on THIS? ② How truthful can I expect them to be HERE (what do they gain)?"},
+ {q:"⏳ Two psychological roots of scarcity's power?", a:"① 'Rare = good' heuristic ② Psychological reactance — we fight lost freedoms. Loss framing beats gain framing."},
+ {q:"Cookie jar study's sharpest finding?", a:"Cookies were most desired when they BECAME scarce due to social DEMAND — newly scarce + competition is the strongest combo."},
+ {q:"🔗 What makes a commitment strongest?", a:"Active (written), public, effortful, and freely chosen (no big external reward/threat)."},
+ {q:"What is lowballing?", a:"Offer a sweet deal → let commitment grow new supporting reasons → remove the original sweetener. The decision stands on its own new legs."},
+ {q:"🤝 Principle #7 (new edition)?", a:"Unity — we say yes to 'one of us': family, place, tribe; created by being together or acting together (synchrony, co-creation, asking for advice)."},
+ {q:"📈 Investor: the time-machine test?", a:"'Knowing what I know now, would I buy this TODAY at this price?' If no — exit. Defeats commitment/sunk-cost bias."},
+ {q:"The universal defense against all 7?", a:"Notice the automatic rush (urgency, flattery, obligation, tribe-feeling), NAME the principle, pause, and judge the request on merits alone."}
+];
+var ci=0, flipped=false;
+function renderCard(){
+  var c=cards[ci];
+  document.getElementById('fcText').innerHTML = flipped ? '<b style="color:var(--teal)">'+c.a+'</b>' : c.q;
+  document.getElementById('fcCount').textContent=(ci+1)+' / '+cards.length;
+}
+function flipCard(){flipped=!flipped; renderCard();}
+function nextCard(){ci=(ci+1)%cards.length; flipped=false; renderCard();}
+function prevCard(){ci=(ci-1+cards.length)%cards.length; flipped=false; renderCard();}
+renderCard();
+
+/* ---------- QUIZ ---------- */
+var quiz=[
+ {q:"A free sample at the supermarket makes you feel you should buy the product. Which principle?",
+  o:["Scarcity","Reciprocation","Social proof","Unity"], c:1,
+  e:"Reciprocation: even tiny unsolicited gifts create a felt obligation to repay — the engine behind samples, free trials, and Amway's 'BUG'."},
+ {q:"In Langer's copy-machine study, 'May I use the Xerox because I have to make copies?' achieved ~93% compliance. Why?",
+  o:["People feared confrontation","The word 'because' triggers automatic compliance even with an empty reason","The request was small","She was attractive"], c:1,
+  e:"The trigger word 'because' activates the click-run shortcut — the quality of the reason barely mattered."},
+ {q:"A negotiator asks for $1M, is refused, then 'concedes' to $400k — her real target. This is:",
+  o:["Lowballing","Foot-in-the-door","Rejection-then-retreat (door-in-the-face)","Anchoring only"], c:2,
+  e:"Rejection-then-retreat combines reciprocity (concession for concession) with contrast ($400k looks small after $1M)."},
+ {q:"Canned laughter works on audiences even though everyone claims to hate it. This demonstrates:",
+  o:["Authority","Liking","Social proof via counterfeit evidence","Commitment"], c:2,
+  e:"Fake laughter is counterfeit social proof — and it still works because the shortcut fires automatically."},
+ {q:"You collapse on a busy street. Per Cialdini, your best move is to:",
+  o:["Shout 'help' loudly to everyone","Wait — someone will act","Point at one person: 'You in the blue jacket — call an ambulance'","Crawl to safety quietly"], c:2,
+  e:"Defeat pluralistic ignorance and diffusion of responsibility by removing all uncertainty for ONE designated helper."},
+ {q:"Milgram's obedience studies primarily revealed that:",
+  o:["People are naturally cruel","~65% obeyed authority to the maximum shock level","Only men obey authority","Education prevents obedience"], c:1,
+  e:"Ordinary, decent people obeyed a lab-coated authority to 450 'volts'. Authority symbols (titles, uniforms) trigger deep deference."},
+ {q:"The waiter Vincent warned guests off a dish 'not as good tonight' — then his wine suggestions were accepted readily. He exploited:",
+  o:["Scarcity","Arguing against self-interest to build credible authority","Reciprocity","Unity"], c:1,
+  e:"Mentioning a small drawback first establishes trustworthiness — then every later recommendation carries extra weight."},
+ {q:"In the cookie-jar study, which cookies were rated MOST desirable?",
+  o:["From the full jar","From the always-scarce jar","From the jar that just BECAME scarce due to demand","All equal"], c:2,
+  e:"Newly scarce + scarce-because-others-want-it is scarcity at maximum power — the psychology of auctions and bubbles."},
+ {q:"'Offer ends at midnight!' on an online course works mainly through:",
+  o:["Authority","Deadline scarcity + loss aversion","Social proof","Liking"], c:1,
+  e:"Deadlines convert a purchase decision into a potential LOSS — and we fight harder to avoid losses than to gain equivalent wins."},
+ {q:"Chinese POW camps got prisoners to write mild pro-communist statements first. The key insight:",
+  o:["Torture works best","Small written, public, voluntary commitments change self-image and escalate","Prisoners were pre-selected","Rewards must be large"], c:1,
+  e:"Written + public + freely chosen = commitments that rewrite identity. Start small, escalate — the foot-in-the-door engine."},
+ {q:"A car dealer agrees on a great price, you arrange financing and tell friends — then 'the manager rejects the deal.' You buy anyway. This is:",
+  o:["Lowballing","Door-in-the-face","Contrast principle","Reciprocation"], c:0,
+  e:"Lowballing: the original reason is removed, but your commitment has grown new supporting legs (friends told, financing done, emotional ownership)."},
+ {q:"An investor who posted his stock pick publicly keeps averaging down after the thesis breaks. The dominant force is:",
+  o:["Scarcity","Commitment & consistency (plus sunk cost)","Unity","Social proof"], c:1,
+  e:"Like the racetrack bettors, confidence rises after commitment. Public positions are hardest to reverse. Cure: the time-machine question."},
+ {q:"Madoff's fraud spread through tight-knit communities who trusted him as 'one of us.' Which principle was weaponized?",
+  o:["Authority only","Unity (shared identity / affinity)","Reciprocation","Contrast"], c:1,
+  e:"Affinity fraud is Unity exploited: 'we' feelings replace due diligence. The warmer the tribe, the colder your analysis should be."},
+ {q:"Per Cialdini, the correct response to a genuine favor vs. a sales trick is:",
+  o:["Repay both — a rule is a rule","Repay neither","Repay genuine favors; mentally REDEFINE tricks as sales devices and owe nothing","Always return double"], c:2,
+  e:"The rule says repay favors — not tricks. Redefinition dissolves the false obligation without making you ungrateful."},
+ {q:"Markets are most vulnerable to social proof and herd behavior when:",
+  o:["Volatility is low","Uncertainty is high and investors watch similar others","Interest rates fall","Earnings season ends"], c:1,
+  e:"Uncertainty + similarity are the two amplifiers of social proof — exactly the conditions at manic tops and panic bottoms."}
+];
+
+var answered=0, correct=0;
+function buildQuiz(){
+  var area=document.getElementById('quizArea');
+  area.innerHTML='';
+  answered=0; correct=0;
+  updateScore();
+  document.getElementById('resultBanner').style.display='none';
+  quiz.forEach(function(item,qi){
+    var card=document.createElement('div'); card.className='q-card';
+    card.innerHTML='<div class="qnum">Question '+(qi+1)+' of '+quiz.length+'</div><h3>'+item.q+'</h3>';
+    item.o.forEach(function(opt,oi){
+      var b=document.createElement('button');
+      b.className='opt'; b.textContent=opt;
+      b.onclick=function(){answer(card,item,oi,b);};
+      card.appendChild(b);
+    });
+    var ex=document.createElement('div'); ex.className='expl'; ex.innerHTML='💡 '+item.e;
+    card.appendChild(ex);
+    area.appendChild(card);
+  });
+}
+function answer(card,item,oi,btn){
+  if(card.dataset.done)return;
+  card.dataset.done='1';
+  var opts=card.querySelectorAll('.opt');
+  opts.forEach(function(o,i){
+    o.disabled=true;
+    if(i===item.c)o.classList.add('correct');
+  });
+  if(oi!==item.c)btn.classList.add('wrong'); else correct++;
+  card.querySelector('.expl').classList.add('show');
+  answered++;
+  updateScore();
+  if(answered===quiz.length)showResult();
+}
+function updateScore(){
+  document.getElementById('scoreText').textContent=correct+' / '+answered+(answered?('  ('+Math.round(100*correct/answered)+'%)'):'');
+}
+function showResult(){
+  var pct=Math.round(100*correct/quiz.length);
+  var b=document.getElementById('resultBanner');
+  var msg,bg;
+  if(pct>=90){msg='🏆 Master of Influence! ('+pct+'%) The concepts have stuck. Now go spot these principles in the wild.';bg='rgba(74,222,128,.15)';}
+  else if(pct>=70){msg='💪 Strong grasp ('+pct+'%). Review the principles you missed, then retake.';bg='rgba(240,180,41,.15)';}
+  else if(pct>=50){msg='📖 Getting there ('+pct+'%). Re-read the 7 Principles tab and run the flashcards.';bg='rgba(96,165,250,.15)';}
+  else{msg='🔄 ('+pct+'%) Time for a full re-read — start with the Overview tab, then flashcards, then retry.';bg='rgba(248,113,113,.15)';}
+  b.innerHTML='<h3 style="margin-bottom:6px;">'+msg+'</h3>';
+  b.style.background=bg; b.style.display='block';
+  try{
+    var best=parseInt(localStorage.getItem('influence_best')||'0',10);
+    if(pct>best)localStorage.setItem('influence_best',pct);
+    b.innerHTML+='<div style="color:var(--muted); font-size:.9rem;">Personal best: '+Math.max(pct,best)+'%</div>';
+  }catch(e){}
+  b.scrollIntoView({behavior:'smooth'});
+}
+function resetQuiz(){buildQuiz(); window.scrollTo({top:0,behavior:'smooth'});}
+buildQuiz();
+</script>
+</body>
+</html>
